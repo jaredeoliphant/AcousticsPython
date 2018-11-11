@@ -6,7 +6,7 @@ Module 'spectra' contains autospec, crossspec, and fractionalOctave
 This program calulates the autospectral density or autospectrum and the OASPL of a signal.
 Hanning windowing is used, with 50% overlap. Per Bendat and Piersol, Gxx 
 is scaled by the mean-square value of the window to recover the correct OASPL.
-call [Gxx,f,OASPL] = autospec(x,fs,ns,N);
+call Gxx,f,OASPL = autospec(x,fs,ns,N)
 Outputs: 
 Gxx = Single-sided autospectrum or autospectral density, depending on unitflag
 f = frequency array for plotting
@@ -88,7 +88,7 @@ This program calulates the crossspectral density or spectrum of signals x and y.
 Hanning windowing is used, with 50% overlap. Per Bendat and Piersol, Section 11.6.3, Gxy 
 is scaled by the mean-square value of the window for overall amplitude
 scaling purposes.
-call [Gxy,f] = crossspec(x,y,fs,ns,N,unitflag);
+call Gxy,f = crossspec(x,y,fs,ns,N,unitflag)
 Outputs: 
 Gxy = Single-sided cross spectrum or cross spectral density, depending on unitflag
 f = frequency array for plotting
