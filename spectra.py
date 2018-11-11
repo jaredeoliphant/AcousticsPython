@@ -64,7 +64,7 @@ def autospec(x,fs,ns,N,unitflag=0):
     else:
         OASPL = 20*np.log10(np.sqrt(np.sum(Gxx))/2e-5)
 
-    return [Gxx,f,OASPL]
+    return (Gxx,f,OASPL)
 
 
 
@@ -142,7 +142,7 @@ def crossspec(x,y,fs,ns=2**15,N=-1,unitflag=0):
 
     Gxy = Gxy*df**unitflag
     
-    return [Gxy,f]
+    return (Gxy,f)
 
 
 
@@ -162,7 +162,7 @@ def crossspec(x,y,fs,ns=2**15,N=-1,unitflag=0):
 
 
 '''
-[spec,fc]=FractionalOctave(f,Gxx,flims,width)
+[spec,fc]=fractionalOctave(f,Gxx,flims,width)
 Performs a frequency-domain, fractional-octave analysis using filter
 masks using the ANSI 2004 standard. Filter masks calculated using exact
 center frequencies (referenced to 1 kHz), whereas preferred frequencies
@@ -215,11 +215,9 @@ def fractionalOctave(f,Gxx,flims=[2e1,2e4],width=3):
     fc = np.array(newfc)
     fcexact = np.array(newfcexact)
 
-    step = 24/width
-
-    fc = fc[np.arange(0,len(fc),step)]
-    fcexact = fcexact[np.arange(0,len(fcexact),step)]
-
+    step = int(24/width)
+    fc = fc[np.arange(0,len(fc),step,dtype=int)]
+    fcexact = fcexact[np.arange(0,len(fcexact),step,dtype=int)]
     df = f[1] - f[0]
     spec = []
     for i in range(len(fcexact)):
@@ -234,4 +232,4 @@ def fractionalOctave(f,Gxx,flims=[2e1,2e4],width=3):
 
     spec = np.array(spec)
 
-    return [fc,spec]
+    return (spec,fc)
