@@ -46,7 +46,7 @@ def autospec(x,fs,ns,N,unitflag=0):
 
     blockMat = np.tile(np.matrix(np.arange(0,ns,dtype=int)),[numBlocks,1]) \
      + np.tile(np.matrix(np.arange(0,numBlocks,dtype=int)).T*ns/2,[1,ns])
-    blockMat = np.matrix(blockMat, dtype=int)
+    blockMat = np.matrix(blockMat, dtype=int)  # ensure the matrix is still a matrix of integers
 
     blocks = np.multiply(np.tile(ww,[numBlocks,1]),x[blockMat])
     X = np.fft.fft(blocks)
@@ -64,7 +64,7 @@ def autospec(x,fs,ns,N,unitflag=0):
     else:
         OASPL = 20*np.log10(np.sqrt(np.sum(Gxx))/2e-5)
 
-    return (Gxx,f,OASPL)
+    return Gxx,f,OASPL
 
 
 
@@ -120,13 +120,15 @@ def crossspec(x,y,fs,ns=2**15,N=-1,unitflag=0):
     x -= np.mean(x)
     y -= np.mean(y)
 
+    # windowing function
     ww = np.hanning(ns)
     W = float(np.mean(ww**2))
 
-    numBlocks = math.floor(2*N/ns-1)
+    numBlocks = int(math.floor(2*N/ns-1))
 
     blockMat = np.tile(np.matrix(np.arange(0,ns,dtype=int)),[numBlocks,1]) \
      + np.tile(np.matrix(np.arange(0,numBlocks,dtype=int)).T*ns/2,[1,ns])
+    blockMat = np.matrix(blockMat, dtype=int)  # ensure the matrix is still a matrix of integers
 
 
     blocksx = np.multiply(np.tile(ww,[numBlocks,1]),x[blockMat])
@@ -134,19 +136,15 @@ def crossspec(x,y,fs,ns=2**15,N=-1,unitflag=0):
     X = np.fft.fft(blocksx)
     Y = np.fft.fft(blocksy)
 
-    Xss = X[:,0:ns/2]
-    Yss = Y[:,0:ns/2]
+    Xss = X[:,0:int(ns/2)]
+    Yss = Y[:,0:int(ns/2)]
 
     Scale = 2/float(ns)/fs/W
     Gxy = Scale*np.mean(np.multiply(np.conjugate(Xss),Yss),axis=0)
 
     Gxy = Gxy*df**unitflag
     
-    return (Gxy,f)
-
-
-
-
+    return Gxy,f
 
 
 
@@ -162,7 +160,7 @@ def crossspec(x,y,fs,ns=2**15,N=-1,unitflag=0):
 
 
 '''
-[spec,fc]=fractionalOctave(f,Gxx,flims,width)
+spec,fc =fractionalOctave(f,Gxx,flims,width)
 Performs a frequency-domain, fractional-octave analysis using filter
 masks using the ANSI 2004 standard. Filter masks calculated using exact
 center frequencies (referenced to 1 kHz), whereas preferred frequencies
@@ -232,4 +230,4 @@ def fractionalOctave(f,Gxx,flims=[2e1,2e4],width=3):
 
     spec = np.array(spec)
 
-    return (spec,fc)
+    return spec,fc
