@@ -5,7 +5,7 @@ import sys
 import matplotlib.pyplot as plt
 
 path = sys.path[0]+'/ReverbFiles'
-print (path)
+print ("path to files: ",path)
 
 N = 6195200
 x1 = np.zeros((N,6))
@@ -102,8 +102,8 @@ Lw1 = Lp_bar1.transpose()[0] + 10*np.log(A/A0) + 4.34*A/S + 10*np.log10(1+S*c/8/
 Lw2 = Lp_bar2.transpose()[0] + 10*np.log(A/A0) + 4.34*A/S + 10*np.log10(1+S*c/8/V/f) - 25*np.log10(427*np.sqrt(273.0/(273+T))*B/B0/400.0) - 6
 
 fig4, ax4 = plt.subplots()
-ax4.plot(Lw1)  #,'color',[.75 .6 0],'linewidth',8,'marker','none')
-ax4.plot(Lw2)  #,'color',[0 0 .75],'linewidth',8,'marker','none')
+ax4.semilogx(fc,Lw1)  #,'color',[.75 .6 0],'linewidth',8,'marker','none')
+ax4.semilogx(fc,Lw2-20)  #,'color',[0 0 .75],'linewidth',8,'marker','none')
 # ax4.set_xscale('log')
 # xlim([90 11e3])
 # % ylim([0 10])
