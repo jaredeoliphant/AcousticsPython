@@ -53,7 +53,7 @@ Author: Kent Gee
 def weighting(f,type='A'):
     type = type.upper()
     if type == 'A':
-        K = 10.**(2./20.)
+        K = 10.0**(2/20.0)
         W = K*(12200.**2*f**4)/(f**2+20.6**2)/(f**2+12200.**2)/np.sqrt(f**2+107.7**2)/np.sqrt(f**2+737.9**2)
         W = W**2
     elif type == 'B':
@@ -96,4 +96,4 @@ def weighting(f,type='A'):
     else:
         print('Unknown weighting type')
 
-    return (W, 10*np.log10(W))
+    return W, 10*np.log10(W)
